@@ -110,3 +110,76 @@ for line in log_lines:
 ## Aplicación Práctica
 
 Hemos aplicado todos estos conceptos en nuestro script [`log_analyzer.py`](../src/log_analyzer.py) para construir una herramienta de análisis de logs robusta y eficiente.
+
+---
+
+## Poniéndolo en Práctica: Creando un Script Principal
+
+Una vez que hemos creado y probado nuestras funciones (nuestra "biblioteca"), necesitamos un script principal que las utilice para realizar una tarea concreta. Por convención, este archivo suele llamarse `main.py`.
+
+Este script se encarga de orquestar la lógica:
+1.  Importa las funciones necesarias desde `src`.
+2.  Prepara los datos de entrada (en nuestro caso, simula el contenido de un log).
+3.  Llama a nuestras funciones para procesar los datos.
+4.  Realiza análisis adicionales sobre los resultados (como contar IPs).
+5.  Presenta un reporte final al usuario.
+
+### Ejemplo: `main.py`
+
+```python
+# main.py
+
+# 1. Importamos la función que queremos usar.
+from src.log_analyzer import extract_ips_from_log
+
+# 2. Simulamos el contenido de un archivo de log.
+log_content = """
+[2025-10-14 14:10:05] - ERROR - Failed login attempt from 192.168.1.100
+[2025-10-14 14:10:15] - INFO - User 'root' logged in.
+[2025-10-14 14:11:20] - ERROR - Failed login attempt from 203.0.113.45
+[2025-10-14 14:12:01] - ERROR - Failed login attempt from 192.168.1.100
+[2025-10-14 14:12:30] - ERROR - Failed login attempt from 198.51.100.2
+[2025-10-14 14:13:00] - CRITICAL - SYSTEM_COMPROMISED
+[2025-10-14 14:14:00] - ERROR - Failed login attempt from 10.0.0.1
+"""
+
+print("--- Iniciando análisis del log ---")
+
+# 3. Usamos nuestra función para extraer las IPs.
+found_ips = extract_ips_from_log(log_content)
+
+print(f"Análisis completado. Se encontraron {len(found_ips)} intentos de login fallidos.")
+
+# 4. Contamos los intentos por cada IP.
+ip_counts = {}
+for ip in found_ips:
+    ip_counts[ip] = ip_counts.get(ip, 0) + 1
+
+# 5. Imprimimos el reporte final.
+if ip_counts:
+    print("\n--- Reporte de Intentos de Login Fallidos ---")
+    for ip, count in ip_counts.items():
+        print(f"- IP: {ip:<15} | Intentos: {count}")
+else:
+    print("\nNo se registraron intentos de login fallidos relevantes.")
+
+print("\n--- Fin del script ---")
+```
+
+### Ejecución y Salida
+
+Al ejecutar `python3 main.py` en la terminal, la salida sería:
+
+```
+--- Iniciando análisis del log ---
+Análisis completado. Se encontraron 4 intentos de login fallidos.
+
+--- Reporte de Intentos de Login Fallidos ---
+- IP: 192.168.1.100   | Intentos: 2
+- IP: 203.0.113.45    | Intentos: 1
+- IP: 198.51.100.2    | Intentos: 1
+
+--- Fin del script ---
+```
+
+Este ejemplo demuestra el flujo de trabajo completo: construir herramientas reutilizables y probadas (`log_analyzer.py`) y luego usarlas en un script de nivel superior (`main.py`) para resolver un problema real.
