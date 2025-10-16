@@ -12,3 +12,9 @@ Aquí se registrará un resumen de todas las consultas y explicaciones generadas
 
 - **doc(condicionales):** Crea documento sobre sentencias condicionales.
   - [Ver documento](./docs/explicacion-condicionales.md)
+
+- **doc(bucles):** Crea documento sobre bucles `for` y `while`.
+  - [Ver documento](./docs/explicacion-bucles.md)
+
+- **doc(tutorial):** Crea tutorial práctico de control de acceso.
+  - [Ver documento](./docs/tutorial-control-de-acceso.md)
