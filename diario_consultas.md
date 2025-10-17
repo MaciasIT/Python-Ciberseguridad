@@ -18,3 +18,6 @@ Aquí se registrará un resumen de todas las consultas y explicaciones generadas
 
 - **doc(tutorial):** Crea tutorial práctico de control de acceso.
   - [Ver documento](./docs/tutorial-control-de-acceso.md)
+
+- **doc(estructuras):** Crea guía detallada de estructuras de datos.
+  - [Ver documento](./docs/guia-estructuras-de-datos.md)

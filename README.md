@@ -48,7 +48,12 @@ El proyecto está organizado de la siguiente manera:
     - Procesa logs de texto para extraer información relevante.
     - Utiliza bucles y condicionales para identificar líneas de interés (ej. IPs en logs de error).
 
-4.  **Script Principal (`main.py`):**
+4.  **Generador de IDs de Empleado (`src/generador_id_empleado.py`):**
+    - Genera IDs únicos para un departamento basándose en reglas.
+    - Utiliza un bucle `while` para iterar sobre un rango numérico.
+    - Aplica una condición (`if` con el operador módulo `%`) para seleccionar los IDs válidos.
+
+5.  **Script Principal (`main.py`):**
     - Orquesta la ejecución de las funciones de los otros módulos.
     - Sirve como ejemplo de cómo construir una aplicación a partir de componentes reutilizables.
 
