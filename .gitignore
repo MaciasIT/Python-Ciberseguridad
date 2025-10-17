@@ -11,5 +11,9 @@ env/
 .DS_Store
 *~
 
-# Archivos de configuración de IA
+# Archivos de configuración y seguimiento de IA
 GEMINI.md
+diario_consultas.md
+
+# Directorio de materiales en bruto
+Fundamentos/
