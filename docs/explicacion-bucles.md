@@ -73,7 +73,26 @@ print("Cola de eventos vacía.")
 
 ---
 
-## 3. Controlando el Flujo del Bucle: `break` y `continue`
+## 3. `for` vs. `while`: ¿Cuál Elegir?
+
+| Característica      | Bucle `for`                                     | Bucle `while`                                         |
+| :------------------ | :---------------------------------------------- | :---------------------------------------------------- |
+| **Uso Principal**   | Iterar sobre una secuencia (listas, etc.)       | Repetir hasta que una condición cambie                |
+| **Naturaleza**      | **Definida** (sabes cuántos elementos hay)      | **Indefinida** (no sabes cuántas repeticiones hará)   |
+| **Gestión**         | Automática (el bucle avanza solo)               | Manual (tú debes cambiar la condición para que pare)  |
+| **Riesgo Principal**| Muy bajo (termina cuando la secuencia acaba)    | **Bucle infinito** si la condición nunca cambia       |
+
+### La Regla de Oro
+
+> Si tu lógica se puede expresar como "**para cada elemento en esta colección...**", usa un bucle `for`.
+> 
+> Si tu lógica es "**sigue haciendo esto hasta que esta situación cambie...**", usa un bucle `while`.
+
+Para la mayoría de tareas de procesamiento de datos en ciberseguridad (analizar logs, IPs, hashes), el bucle `for` es más limpio, seguro y "Pythónico". El bucle `while` es para tareas más dinámicas, de espera o de ejecución continua.
+
+---
+
+## 4. Controlando el Flujo del Bucle: `break` y `continue`
 
 A veces necesitas un control más fino sobre las iteraciones.
 
@@ -107,24 +126,19 @@ for line in log_lines:
 
 ---
 
-## Aplicación Práctica
+## 5. Aplicación Práctica: Creando un Script Principal (`main.py`)
 
-Hemos aplicado todos estos conceptos en nuestro script [`log_analyzer.py`](../src/log_analyzer.py) para construir una herramienta de análisis de logs robusta y eficiente.
+Una vez que hemos creado y probado nuestras funciones (nuestra "biblioteca"), necesitamos un script principal que las utilice para realizar una tarea concreta. Este script se encarga de orquestar la lógica:
 
----
-
-## Poniéndolo en Práctica: Creando un Script Principal
-
-Una vez que hemos creado y probado nuestras funciones (nuestra "biblioteca"), necesitamos un script principal que las utilice para realizar una tarea concreta. Por convención, este archivo suele llamarse `main.py`.
-
-Este script se encarga de orquestar la lógica:
 1.  Importa las funciones necesarias desde `src`.
 2.  Prepara los datos de entrada (en nuestro caso, simula el contenido de un log).
 3.  Llama a nuestras funciones para procesar los datos.
 4.  Realiza análisis adicionales sobre los resultados (como contar IPs).
 5.  Presenta un reporte final al usuario.
 
-### Ejemplo: `main.py`
+### Ejemplo de `main.py`
+
+El siguiente código demuestra cómo usar la función `extract_ips_from_log` (definida en `src/log_analyzer.py`) en un script principal.
 
 ```python
 # main.py
@@ -165,21 +179,3 @@ else:
 
 print("\n--- Fin del script ---")
 ```
-
-### Ejecución y Salida
-
-Al ejecutar `python3 main.py` en la terminal, la salida sería:
-
-```
---- Iniciando análisis del log ---
-Análisis completado. Se encontraron 4 intentos de login fallidos.
-
---- Reporte de Intentos de Login Fallidos ---
-- IP: 192.168.1.100   | Intentos: 2
-- IP: 203.0.113.45    | Intentos: 1
-- IP: 198.51.100.2    | Intentos: 1
-
---- Fin del script ---
-```
-
-Este ejemplo demuestra el flujo de trabajo completo: construir herramientas reutilizables y probadas (`log_analyzer.py`) y luego usarlas en un script de nivel superior (`main.py`) para resolver un problema real.
