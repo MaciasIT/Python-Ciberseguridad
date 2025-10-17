@@ -15,7 +15,7 @@ El proyecto está organizado de la siguiente manera:
 ├── tests/             # Pruebas unitarias para el código fuente
 ├── .gitignore         # Archivos y directorios ignorados por Git
 ├── diario_consultas.md  # Índice y resumen de las sesiones
-├── GEMINI.md          # Directrices para el asistente de IA
+├── main.py            # Script principal para ejecutar la lógica
 └── README.md          # Este archivo
 ```
 
@@ -25,6 +25,7 @@ El proyecto está organizado de la siguiente manera:
   - Variables y Tipos de Datos
   - Booleanos y Operadores
   - Sentencias Condicionales (`if`/`elif`/`else`)
+  - Bucles (`for`/`while`, `break`/`continue`)
 - **Desarrollo Profesional:**
   - Desarrollo Guiado por Pruebas (TDD) con `unittest`.
   - Estructura de proyectos (`src`, `docs`, `tests`).
@@ -42,6 +43,14 @@ El proyecto está organizado de la siguiente manera:
     - Evalúa la fortaleza de una contraseña (`Débil`, `Media`, `Fuerte`).
     - Comprueba múltiples criterios usando sentencias condicionales.
     - Incluye una comprobación contra una lista de contraseñas comunes.
+
+3.  **Analizador de Logs (`src/log_analyzer.py`):**
+    - Procesa logs de texto para extraer información relevante.
+    - Utiliza bucles y condicionales para identificar líneas de interés (ej. IPs en logs de error).
+
+4.  **Script Principal (`main.py`):**
+    - Orquesta la ejecución de las funciones de los otros módulos.
+    - Sirve como ejemplo de cómo construir una aplicación a partir de componentes reutilizables.
 
 ## ⚙️ Cómo Ejecutar las Pruebas
 
