@@ -21,3 +21,9 @@ Aquí se registrará un resumen de todas las consultas y explicaciones generadas
 
 - **doc(estructuras):** Crea guía detallada de estructuras de datos.
   - [Ver documento](./docs/guia-estructuras-de-datos.md)
+
+- **doc(listas):** Crea guía profunda sobre listas, slicing y métodos.
+  - [Ver documento](./docs/guia-profunda-listas.md)
+
+- **doc(tutorial):** Crea tutorial práctico de procesamiento de IPs con listas.
+  - [Ver documento](./docs/tutorial-procesamiento-ips.md)

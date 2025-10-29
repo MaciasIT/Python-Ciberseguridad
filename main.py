@@ -42,3 +42,37 @@ else:
     print("\nNo se registraron intentos de login fallidos relevantes.")
 
 print("\n--- Fin del script ---")
+
+
+# =====================================================================
+#  DEMOSTRACIÓN DEL NUEVO MÓDULO: IP ANALYZER
+# =====================================================================
+
+# 1. Importamos la nueva función
+from src.ip_analyzer import analyze_ips
+
+print("\n\n--- Iniciando demostración del analizador de IPs ---")
+
+# 2. Datos de entrada
+raw_ips_from_monitoring = [
+    "203.0.113.5", "198.51.100.22", "203.0.113.5",
+    "203.0.113.45", "198.51.100.22", "203.0.113.5",
+    "192.168.1.101"
+]
+known_blacklist = ["203.0.113.5", "198.51.100.22", "99.99.99.99"]
+
+print(f"IPs crudas a analizar: {raw_ips_from_monitoring}")
+print(f"Blacklist conocida: {known_blacklist}")
+
+# 3. Usar la función para encontrar IPs maliciosas
+malicious_ips = analyze_ips(raw_ips=raw_ips_from_monitoring, blacklist=known_blacklist)
+
+# 4. Generar el reporte
+if malicious_ips:
+    print("\n--- ¡ALERTA DE SEGURIDAD! ---\nSe encontraron las siguientes IPs maliciosas:")
+    for ip in malicious_ips:
+        print(f"- {ip}")
+else:
+    print("\n--- Análisis completado ---\nNo se encontraron amenazas.")
+
+print("\n--- Fin de la demostración ---")
