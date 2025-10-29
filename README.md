@@ -1,65 +1,66 @@
 # Proyecto de Python para Ciberseguridad 🐍
 
-![Python](https://img.shields.io/badge/Python-3.12-blue.svg) ![License](https://img.shields.io/badge/License-MIT-green.svg) ![TDD](https://img.shields.io/badge/Methodology-TDD-purple.svg)
+¡Bienvenido! Este es un repositorio de aprendizaje para el curso de Ciberseguridad de Google, enfocado en la aplicación de conceptos de Python a problemas de seguridad del mundo real.
 
-Repositorio de aprendizaje para el curso de Ciberseguridad de Google, enfocado en la aplicación de conceptos de Python a problemas de seguridad a través de la metodología de Desarrollo Guiado por Pruebas (TDD).
+## ✨ Estado del Proyecto
 
-## 🚀 Estructura del Proyecto
+![Python](https://img.shields.io/badge/Python-3.12-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Testing](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)
+![Methodology](https://img.shields.io/badge/Methodology-TDD-purple.svg)
 
-El proyecto está organizado de la siguiente manera:
+## 📂 Estructura del Proyecto
+
+El proyecto está organizado de forma clara y profesional para facilitar el aprendizaje y la contribución.
 
 ```
-. 
-├── docs/              # Documentación y explicaciones en formato Markdown
-├── src/               # Código fuente de los scripts de Python
-├── tests/             # Pruebas unitarias para el código fuente
-├── .gitignore         # Archivos y directorios ignorados por Git
-├── diario_consultas.md  # Índice y resumen de las sesiones
-├── main.py            # Script principal para ejecutar la lógica
-└── README.md          # Este archivo
+.
+├── docs/              # 📄 Documentación y explicaciones en formato Markdown
+├── src/               # 🐍 Código fuente de los scripts de Python
+├── tests/             # 🧪 Pruebas unitarias para el código fuente
+├── .gitignore         # 🙈 Archivos y directorios ignorados por Git
+├── diario_consultas.md  # 📖 Índice y resumen de las sesiones
+├── main.py            # ▶️ Script principal para ejecutar la lógica
+└── README.md          # ⭐ Este archivo
 ```
 
-## 📚 Temas Tratados
+## 🧠 Principios y Temas Tratados
 
-- **Fundamentos de Python:**
-  - Variables y Tipos de Datos
-  - Booleanos y Operadores
-  - Sentencias Condicionales (`if`/`elif`/`else`)
-  - Bucles (`for`/`while`, `break`/`continue`)
-- **Desarrollo Profesional:**
-  - Desarrollo Guiado por Pruebas (TDD) con `unittest`.
-  - Estructura de proyectos (`src`, `docs`, `tests`).
-  - Logging para auditoría y seguimiento.
-  - Control de versiones con Git.
+Este proyecto se guía por principios de desarrollo profesional y cubre los siguientes temas:
 
-## 🛠️ Scripts Desarrollados
+-   **Fundamentos de Python:** Variables, Tipos de Datos, Booleanos, Condicionales y Bucles.
+-   **Desarrollo Guiado por Pruebas (TDD):** Usamos el módulo `unittest` para asegurar que nuestro código es robusto y funciona como se espera. ¡Primero la prueba, luego el código!
+-   **Documentación Sistemática:** Cada concepto nuevo se documenta en la carpeta `docs`.
+-   **Control de Versiones:** Usamos Git para gestionar el historial de cambios del proyecto.
+
+## 💡 Scripts Desarrollados
+
+Aquí están los módulos prácticos que hemos construido:
 
 1.  **Login Tracker (`src/login_tracker.py`):**
-    - Simula el seguimiento de intentos de inicio de sesión.
-    - Implementa un límite de intentos para prevenir ataques de fuerza bruta.
-    - Utiliza `logging` para registrar eventos de seguridad críticos.
+    -   Simula el seguimiento de intentos de inicio de sesión y bloquea cuentas tras múltiples fallos para prevenir ataques de fuerza bruta.
 
 2.  **Validador de Contraseñas (`src/password_validator.py`):**
-    - Evalúa la fortaleza de una contraseña (`Débil`, `Media`, `Fuerte`).
-    - Comprueba múltiples criterios usando sentencias condicionales.
-    - Incluye una comprobación contra una lista de contraseñas comunes.
+    -   Evalúa la fortaleza de una contraseña basándose en un conjunto de reglas (longitud, caracteres, etc.).
 
 3.  **Analizador de Logs (`src/log_analyzer.py`):**
-    - Procesa logs de texto para extraer información relevante.
-    - Utiliza bucles y condicionales para identificar líneas de interés (ej. IPs en logs de error).
+    -   Procesa logs de texto para extraer información relevante, como IPs en líneas de error.
 
 4.  **Generador de IDs de Empleado (`src/generador_id_empleado.py`):**
-    - Genera IDs únicos para un departamento basándose en reglas.
-    - Utiliza un bucle `while` para iterar sobre un rango numérico.
-    - Aplica una condición (`if` con el operador módulo `%`) para seleccionar los IDs válidos.
+    -   Genera IDs únicos para un departamento basándose en reglas específicas.
 
-5.  **Script Principal (`main.py`):**
-    - Orquesta la ejecución de las funciones de los otros módulos.
-    - Sirve como ejemplo de cómo construir una aplicación a partir de componentes reutilizables.
+5.  **Analizador de IPs (`src/ip_analyzer.py`):**
+    -   Toma una lista de IPs, elimina duplicados y la compara contra una `blacklist` para encontrar coincidencias maliciosas.
 
-## ⚙️ Cómo Ejecutar las Pruebas
+6.  **Parser de Logs con Regex (`src/log_parser.py`):**
+    -   Utiliza expresiones regulares para descomponer una línea de log en sus componentes estructurados (timestamp, nivel, mensaje).
 
-Para ejecutar todas las pruebas del proyecto, puedes usar el siguiente comando desde la raíz del directorio:
+7.  **Script Principal (`main.py`):**
+    -   Orquesta la ejecución de las funciones de los otros módulos a modo de demostración.
+
+## 🧪 Cómo Ejecutar las Pruebas
+
+Para verificar la integridad de todo el código, puedes ejecutar el conjunto de pruebas con este comando:
 
 ```bash
 python3 -m unittest discover
