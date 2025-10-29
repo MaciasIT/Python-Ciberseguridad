@@ -75,4 +75,48 @@ if malicious_ips:
 else:
     print("\n--- Análisis completado ---\nNo se encontraron amenazas.")
 
-print("\n--- Fin de la demostración ---")
+    print("\n--- Fin de la demostración ---")
+
+
+
+
+
+# =====================================================================
+
+#  DEMOSTRACIÓN DEL PARSER DE LOGS CON REGEX
+
+# =====================================================================
+
+from src.log_parser import parse_log_line
+
+
+
+print("\n\n--- Iniciando demostración del parser de logs ---")
+
+
+
+log_de_ejemplo = "[2025-10-29 23:55:12] - WARNING - Memory usage exceeded 80%"
+
+
+
+parsed_log = parse_log_line(log_de_ejemplo)
+
+
+
+if parsed_log:
+
+    print("Log analizado con éxito:")
+
+    for key, value in parsed_log.items():
+
+        print(f"  - {key}: {value}")
+
+else:
+
+    print(f"La línea de log '\"{log_de_ejemplo}\"' no pudo ser analizada.")
+
+
+
+print("\n--- Fin de la demostración de regex ---")
+
+

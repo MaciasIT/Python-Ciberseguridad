@@ -27,3 +27,9 @@ Aquí se registrará un resumen de todas las consultas y explicaciones generadas
 
 - **doc(tutorial):** Crea tutorial práctico de procesamiento de IPs con listas.
   - [Ver documento](./docs/tutorial-procesamiento-ips.md)
+
+- **doc(algoritmos):** Añade introducción a los algoritmos y su uso en ciberseguridad.
+  - [Ver documento](./docs/introduccion-algoritmos.md)
+
+- **doc(regex):** Crea guía de introducción a las expresiones regulares.
+  - [Ver documento](./docs/guia-expresiones-regulares.md)
