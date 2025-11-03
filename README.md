@@ -15,7 +15,9 @@ El proyecto está organizado de forma clara y profesional para facilitar el apre
 
 ```
 .
+├── data/              # 🗂️ Archivos de datos de ejemplo (logs, listas, etc.)
 ├── docs/              # 📄 Documentación y explicaciones en formato Markdown
+├── scripts/           # 💻 Scripts de línea de comandos
 ├── src/               # 🐍 Código fuente de los scripts de Python
 ├── tests/             # 🧪 Pruebas unitarias para el código fuente
 ├── .gitignore         # 🙈 Archivos y directorios ignorados por Git
@@ -55,8 +57,32 @@ Aquí están los módulos prácticos que hemos construido:
 6.  **Parser de Logs con Regex (`src/log_parser.py`):**
     -   Utiliza expresiones regulares para descomponer una línea de log en sus componentes estructurados (timestamp, nivel, mensaje).
 
-7.  **Script Principal (`main.py`):**
+7.  **Detector de Patrones (`src/pattern_detector.py`):**
+    -   Un potente módulo que utiliza un diccionario de expresiones regulares para encontrar una amplia variedad de Indicadores de Compromiso (IoCs) en texto, como IPs (v4/v6), hashes (MD5, SHA1, SHA256), emails, URLs y más.
+
+8.  **Script Principal (`main.py`):**
     -   Orquesta la ejecución de las funciones de los otros módulos a modo de demostración.
+
+## 💻 Herramientas de Línea de Comandos
+
+El proyecto incluye herramientas de CLI para interactuar con la lógica del programa directamente desde la terminal.
+
+### Detector de Patrones
+
+Puedes usar `scripts/detect_patterns_cli.py` para analizar un archivo de log y generar un reporte de los patrones encontrados.
+
+**Uso:**
+
+```bash
+python3 scripts/detect_patterns_cli.py -i <archivo_de_log> [-f <archivo_de_ips_marcadas>] [-o <archivo_de_salida>]
+```
+
+**Ejemplo:**
+
+```bash
+# Analizar un log y compararlo con una lista de IPs conocidas
+python3 scripts/detect_patterns_cli.py -i data/sample_log.txt -f data/flagged.txt
+```
 
 ## 🧪 Cómo Ejecutar las Pruebas
 

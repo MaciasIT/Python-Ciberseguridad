@@ -119,4 +119,45 @@ else:
 
 print("\n--- Fin de la demostración de regex ---")
 
+# =====================================================================
+#  DEMOSTRACIÓN DEL DETECTOR DE PATRONES (IoCs)
+# =====================================================================
+
+from pathlib import Path
+from src.pattern_detector import analyze_text
+
+print("\n\n--- Iniciando demostración del detector de patrones de IoCs ---")
+
+# 1. Leemos el contenido de un archivo de log de ejemplo
+log_file_path = Path("data/sample_log.txt")
+if log_file_path.exists():
+    print(f"Leyendo log de ejemplo: {log_file_path}\n")
+    log_text = log_file_path.read_text(encoding='utf-8', errors='ignore')
+
+    # 2. Usamos el analizador para encontrar todos los patrones
+    found_patterns = analyze_text(log_text)
+
+    # 3. Mostramos un resumen de los resultados más interesantes
+    print("--- Resumen de IoCs Encontrados ---")
+    
+    if found_patterns.get("ipv4_strict"):
+        print(f"\n[+] IPs encontradas: {found_patterns['ipv4_strict']}")
+    
+    if found_patterns.get("email"):
+        print(f"[+] Emails encontrados: {found_patterns['email']}")
+
+    if found_patterns.get("md5"):
+        print(f"[+] Hashes MD5: {found_patterns['md5']}")
+
+    if found_patterns.get("sha1"):
+        print(f"[+] Hashes SHA1: {found_patterns['sha1']}")
+
+    if found_patterns.get("url"):
+        print(f"[+] URLs encontradas: {found_patterns['url']}")
+
+else:
+    print(f"No se encontró el archivo de log de ejemplo en '{log_file_path}'. Saltando demostración.")
+
+print("\n--- Fin de la demostración del detector de patrones ---")
+
 
