@@ -96,4 +96,87 @@ with open('archivo.txt', 'r', encoding='utf-8') as f:
 
 Saber manipular archivos es una habilidad esencial. La sintaxis `with open(...)` es tu mejor aliada para hacerlo de forma segura y eficiente. En ciberseguridad, usarás estos conceptos constantemente para analizar evidencia digital, configurar herramientas o generar reportes.
 
+---
+
+## 4. Técnicas Básicas de Análisis de Contenido
+
+Una vez que puedes leer el contenido de un archivo, el siguiente paso es analizarlo para extraer información útil.
+
+### Búsqueda de Palabras Clave
+
+La técnica más simple es buscar una subcadena de texto (una "palabra clave") en cada línea. El operador `in` de Python es perfecto para esto.
+
+```python
+termino_busqueda = "error"
+lineas_con_error = []
+
+with open('logs.txt', 'r', encoding='utf-8') as f:
+    for linea in f:
+        # Convertimos la línea a minúsculas para una búsqueda sin distinción
+        if termino_busqueda in linea.lower():
+            lineas_con_error.append(linea.strip())
+
+print(f"Se encontraron {len(lineas_con_error)} líneas con el término '{termino_busqueda}'.")
+```
+
+### Extracción de Datos con `.split()`
+
+A menudo, los datos en los archivos de texto están estructurados o separados por un carácter específico (un espacio, una coma, un guion, etc.). El método `.split()` de las cadenas de texto es increíblemente útil para descomponer una línea en una lista de "partes".
+
+Imagina una línea de log como esta:
+`[2025-11-10 10:05:00] - ERROR - Failed to connect to database`
+
+Podemos usar `.split()` para separar cada parte.
+
+```python
+linea_log = "[2025-11-10 10:05:00] - ERROR - Failed to connect to database"
+
+# Si usamos .split() sin argumentos, divide por espacios
+partes = linea_log.split()
+print(partes)
+# Salida: ['[2025-11-10', '10:05:00]', '-', 'ERROR', '-', 'Failed', 'to', 'connect', 'to', 'database']
+
+# Podemos ser más específicos. Si queremos dividir por el guion " - "
+partes_por_guion = linea_log.split(' - ')
+print(partes_por_guion)
+# Salida: ['[2025-11-10 10:05:00]', 'ERROR', 'Failed to connect to database']
+
+# Ahora es fácil acceder a cada parte por su índice
+nivel_de_log = partes_por_guion[1]
+mensaje = partes_por_guion[2]
+print(f"Nivel: {nivel_de_log}")
+print(f"Mensaje: {mensaje}")
+```
+
+### Reconstrucción de Cadenas con `.join()`
+
+El método `.join()` es el complemento perfecto de `.split()`. Mientras `.split()` divide una cadena en una lista de subcadenas, `.join()` hace lo contrario: une una lista de cadenas en una sola cadena, utilizando un separador especificado.
+
+Esto es útil cuando necesitas modificar partes de una línea y luego reconstruirla, o cuando quieres formatear una salida a partir de una lista de elementos.
+
+```python
+# Tenemos una lista de partes, quizás obtenida con .split()
+partes_mensaje = ["Failed", "to", "connect", "to", "database"]
+
+# Queremos unirlas con espacios para formar una frase
+mensaje_reconstruido = " ".join(partes_mensaje)
+print(f"Mensaje reconstruido: {mensaje_reconstruido}")
+# Salida: Mensaje reconstruido: Failed to connect to database
+
+# Podemos usar cualquier separador
+ruta_archivo_partes = ["home", "usuario", "logs", "app.log"]
+ruta_completa = "/".join(ruta_archivo_partes)
+print(f"Ruta completa: /{ruta_completa}")
+# Salida: Ruta completa: /home/usuario/logs/app.log
+
+# Ejemplo práctico: Reconstruir una línea de log modificada
+linea_log_partes = ['[2025-11-10 10:05:00]', 'ERROR', 'Failed to connect to database']
+# Supongamos que queremos cambiar el nivel de log a 'CRITICAL'
+linea_log_partes[1] = 'CRITICAL'
+linea_log_modificada = ' - '.join(linea_log_partes)
+print(f"Línea de log modificada: {linea_log_modificada}")
+# Salida: Línea de log modificada: [2025-11-10 10:05:00] - CRITICAL - Failed to connect to database
+```
+
+El uso combinado de `.split()` y `.join()` te da un control muy fino sobre la manipulación de cadenas de texto, lo cual es invaluable para el procesamiento de datos estructurados y semi-estructurados en ciberseguridad.
 ```
