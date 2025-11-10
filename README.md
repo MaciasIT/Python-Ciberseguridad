@@ -55,7 +55,6 @@ Aquí puedes encontrar toda la documentación generada para entender los concept
 - [Tutorial de Acceso a Archivos](./docs/tutorial-acceso-archivos.md)
 - [Introducción a los Algoritmos](./docs/introduccion-algoritmos.md)
 - [Guía de Introducción a las Expresiones Regulares](./docs/guia-expresiones-regulares.md)
-- [Explicación Avanzada de Regex](./docs/explicacion-avanzada-regex.md)
 
 ### Anexos
 - [Anexo: Configuración de Logging](./docs/anexo-configuracion-logging.md)
