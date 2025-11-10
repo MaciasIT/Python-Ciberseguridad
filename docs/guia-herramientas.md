@@ -101,3 +101,25 @@ from src.generador_id_empleado import generar_ids_empleado
 ids = generar_ids_empleado()
 print(f"IDs generados: {ids}")
 ```
+
+---
+
+## 6. Lector de Logs Simples (`lector_logs_simples.py`)
+
+### ¿Qué hace?
+Este script lee un archivo de texto (como un log) línea por línea y busca todas las ocurrencias de un término de búsqueda específico, como "ERROR" o "admin".
+
+### ¿Por qué es importante en ciberseguridad?
+Es una herramienta fundamental para el análisis forense y el monitoreo de sistemas. Permite a un analista filtrar rápidamente terabytes de datos de logs para encontrar evidencia de un compromiso, errores críticos del sistema o actividad de un usuario específico. Es el primer paso en cualquier investigación de incidentes basada en logs.
+
+### ¿Cómo se usa?
+```python
+from src.lector_logs_simples import analizar_log_simple
+
+# La ruta al archivo que quieres analizar
+archivo_log = "data/simple_log.txt"
+# El término que te interesa encontrar
+palabra_clave = "ERROR"
+
+analizar_log_simple(archivo_log, palabra_clave)
+```

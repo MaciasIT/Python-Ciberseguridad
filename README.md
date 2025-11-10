@@ -60,8 +60,11 @@ Aquí están los módulos prácticos que hemos construido:
 7.  **Detector de Patrones (`src/pattern_detector.py`):**
     -   Un potente módulo que utiliza un diccionario de expresiones regulares para encontrar una amplia variedad de Indicadores de Compromiso (IoCs) en texto, como IPs (v4/v6), hashes (MD5, SHA1, SHA256), emails, URLs y más.
 
-8.  **Script Principal (`main.py`):**
-    -   Orquesta la ejecución de las funciones de los otros módulos a modo de demostración.
+8.  **Lector de Logs Simples (`src/lector_logs_simples.py`):**
+    -   Lee un archivo de texto línea por línea y busca un término de búsqueda, demostrando los fundamentos del análisis de logs.
+
+9.  **Menú Interactivo (`main.py`):**
+    -   Ofrece una interfaz de línea de comandos para ejecutar todas las herramientas y demostraciones del proyecto de forma interactiva.
 
 ## 💻 Herramientas de Línea de Comandos
 

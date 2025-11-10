@@ -33,3 +33,7 @@ Aquí se registrará un resumen de todas las consultas y explicaciones generadas
 
 - **doc(regex):** Crea guía de introducción a las expresiones regulares.
   - [Ver documento](./docs/guia-expresiones-regulares.md)
+
+- **feat(files):** Añade tutorial y ejemplo de acceso a archivos.
+  - [Ver tutorial](./docs/tutorial-acceso-archivos.md)
+  - [Ver script](./src/lector_logs_simples.py)
