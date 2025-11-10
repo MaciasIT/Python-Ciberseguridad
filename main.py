@@ -1,163 +1,186 @@
 # main.py
+import time
+from pathlib import Path
 
-# Importamos la función que queremos usar desde nuestro módulo.
+# --- Importaciones de los módulos de herramientas ---
+from src.password_validator import validate_password_strength
 from src.log_analyzer import extract_ips_from_log
+from src.ip_validator import filter_allowed_ips
+from src.login_tracker import LoginTracker
+from src.generador_id_empleado import generar_ids_empleado
+from src.ip_analyzer import analyze_ips
+from src.log_parser import parse_log_line
+from src.pattern_detector import analyze_text
 
-# --- Simulación de un Entorno Real ---
 
-# 1. Simulamos el contenido de un archivo de log que podríamos haber leído.
-log_content = """
+# --- Funciones para cada opción del menú ---
+
+def run_password_validator():
+    """Opción 1: Pide una contraseña y muestra su fortaleza."""
+    print("\n--- Validador de Contraseñas ---")
+    password = input("Introduce la contraseña a validar: ")
+    strength = validate_password_strength(password)
+    print(f"-> La fortaleza de la contraseña es: {strength}\n")
+
+def run_log_analyzer():
+    """Opción 2: Analiza un bloque de texto de log y extrae IPs con intentos fallidos."""
+    print("\n--- Analizador de Logs (Simple) ---")
+    log_content = """
 [2025-10-14 14:10:05] - ERROR - Failed login attempt from 192.168.1.100
 [2025-10-14 14:10:15] - INFO - User 'root' logged in.
 [2025-10-14 14:11:20] - ERROR - Failed login attempt from 203.0.113.45
 [2025-10-14 14:12:01] - ERROR - Failed login attempt from 192.168.1.100
-[2025-10-14 14:12:30] - ERROR - Failed login attempt from 198.51.100.2
-[2025-10-14 14:13:00] - CRITICAL - SYSTEM_COMPROMISED
-[2025-10-14 14:14:00] - ERROR - Failed login attempt from 10.0.0.1
 """
+    print("Analizando el siguiente bloque de log:")
+    print("------------------------------------")
+    print(log_content.strip())
+    print("------------------------------------")
+    
+    found_ips = extract_ips_from_log(log_content)
+    
+    if not found_ips:
+        print("-> No se encontraron IPs de intentos fallidos relevantes.\n")
+        return
 
-print("--- Iniciando análisis del log ---")
-
-# 2. Usamos nuestra función para extraer las IPs.
-# La función se encargará de procesar el texto y detenerse si hay una alerta crítica.
-found_ips = extract_ips_from_log(log_content)
-
-print(f"Análisis completado. Se encontraron {len(found_ips)} intentos de login fallidos antes de una alerta crítica (si la hubo).")
-
-# 3. Contamos los intentos por cada IP.
-# Usamos un diccionario para almacenar las cuentas: {'ip': count}
-ip_counts = {}
-for ip in found_ips:
-    # .get(ip, 0) busca la IP en el diccionario. Si no la encuentra, devuelve 0.
-    # Luego le sumamos 1 y lo guardamos.
-    ip_counts[ip] = ip_counts.get(ip, 0) + 1
-
-# 4. Imprimimos el reporte final.
-if ip_counts:
-    print("\n--- Reporte de Intentos de Login Fallidos ---")
-    # Iteramos sobre el diccionario para mostrar los resultados.
+    ip_counts = {}
+    for ip in found_ips:
+        ip_counts[ip] = ip_counts.get(ip, 0) + 1
+        
+    print("\n-> Reporte de Intentos de Login Fallidos:")
     for ip, count in ip_counts.items():
         print(f"- IP: {ip:<15} | Intentos: {count}")
-else:
-    print("\nNo se registraron intentos de login fallidos relevantes.")
+    print("")
 
-print("\n--- Fin del script ---")
-
-
-# =====================================================================
-#  DEMOSTRACIÓN DEL NUEVO MÓDULO: IP ANALYZER
-# =====================================================================
-
-# 1. Importamos la nueva función
-from src.ip_analyzer import analyze_ips
-
-print("\n\n--- Iniciando demostración del analizador de IPs ---")
-
-# 2. Datos de entrada
-raw_ips_from_monitoring = [
-    "203.0.113.5", "198.51.100.22", "203.0.113.5",
-    "203.0.113.45", "198.51.100.22", "203.0.113.5",
-    "192.168.1.101"
-]
-known_blacklist = ["203.0.113.5", "198.51.100.22", "99.99.99.99"]
-
-print(f"IPs crudas a analizar: {raw_ips_from_monitoring}")
-print(f"Blacklist conocida: {known_blacklist}")
-
-# 3. Usar la función para encontrar IPs maliciosas
-malicious_ips = analyze_ips(raw_ips=raw_ips_from_monitoring, blacklist=known_blacklist)
-
-# 4. Generar el reporte
-if malicious_ips:
-    print("\n--- ¡ALERTA DE SEGURIDAD! ---\nSe encontraron las siguientes IPs maliciosas:")
-    for ip in malicious_ips:
-        print(f"- {ip}")
-else:
-    print("\n--- Análisis completado ---\nNo se encontraron amenazas.")
-
-    print("\n--- Fin de la demostración ---")
-
-
-
-
-
-# =====================================================================
-
-#  DEMOSTRACIÓN DEL PARSER DE LOGS CON REGEX
-
-# =====================================================================
-
-from src.log_parser import parse_log_line
-
-
-
-print("\n\n--- Iniciando demostración del parser de logs ---")
-
-
-
-log_de_ejemplo = "[2025-10-29 23:55:12] - WARNING - Memory usage exceeded 80%"
-
-
-
-parsed_log = parse_log_line(log_de_ejemplo)
-
-
-
-if parsed_log:
-
-    print("Log analizado con éxito:")
-
-    for key, value in parsed_log.items():
-
-        print(f"  - {key}: {value}")
-
-else:
-
-    print(f"La línea de log '\"{log_de_ejemplo}\"' no pudo ser analizada.")
-
-
-
-print("\n--- Fin de la demostración de regex ---")
-
-# =====================================================================
-#  DEMOSTRACIÓN DEL DETECTOR DE PATRONES (IoCs)
-# =====================================================================
-
-from pathlib import Path
-from src.pattern_detector import analyze_text
-
-print("\n\n--- Iniciando demostración del detector de patrones de IoCs ---")
-
-# 1. Leemos el contenido de un archivo de log de ejemplo
-log_file_path = Path("data/sample_log.txt")
-if log_file_path.exists():
-    print(f"Leyendo log de ejemplo: {log_file_path}\n")
-    log_text = log_file_path.read_text(encoding='utf-8', errors='ignore')
-
-    # 2. Usamos el analizador para encontrar todos los patrones
-    found_patterns = analyze_text(log_text)
-
-    # 3. Mostramos un resumen de los resultados más interesantes
-    print("--- Resumen de IoCs Encontrados ---")
+def run_ip_validator():
+    """Opción 3: Filtra una lista de IPs contra una lista de permitidos."""
+    print("\n--- Validador de IPs ---")
+    ip_list = ["192.168.1.10", "8.8.8.8", "10.0.0.5", "192.168.1.1"]
+    allow_list = ["192.168.1.1", "192.168.1.10"]
     
-    if found_patterns.get("ipv4_strict"):
-        print(f"\n[+] IPs encontradas: {found_patterns['ipv4_strict']}")
+    print(f"IPs a verificar: {ip_list}")
+    print(f"Lista de IPs permitidas: {allow_list}")
     
-    if found_patterns.get("email"):
-        print(f"[+] Emails encontrados: {found_patterns['email']}")
+    allowed_ips = filter_allowed_ips(ip_list, allow_list)
+    
+    print(f"-> IPs que pasaron el filtro: {allowed_ips}\n")
 
-    if found_patterns.get("md5"):
-        print(f"[+] Hashes MD5: {found_patterns['md5']}")
+def run_login_tracker():
+    """Opción 4: Simula intentos de login y muestra si una cuenta se bloquea."""
+    print("\n--- Rastreador de Logins ---")
+    tracker = LoginTracker()
+    username = "test_user"
+    
+    print(f"Simulando intentos de login para el usuario '{username}'...")
+    print(f"El máximo de intentos permitidos es: {tracker.MAX_ATTEMPTS}")
+    
+    for i in range(tracker.MAX_ATTEMPTS + 1):
+        print(f"Intento {i + 1}...")
+        tracker.record_attempt(username)
+        time.sleep(0.5)
+        if tracker.is_locked(username):
+            print(f"-> ¡Cuenta bloqueada para '{username}'!")
+            break
+    print("")
 
-    if found_patterns.get("sha1"):
-        print(f"[+] Hashes SHA1: {found_patterns['sha1']}")
+def run_id_generator():
+    """Opción 5: Genera y muestra IDs de empleado."""
+    print("\n--- Generador de IDs de Empleado ---")
+    ids = generar_ids_empleado()
+    print(f"-> Se generaron {len(ids)} IDs para el departamento de Ventas.")
+    print(f"-> Lista de IDs: {ids}\n")
 
-    if found_patterns.get("url"):
-        print(f"[+] URLs encontradas: {found_patterns['url']}")
+def run_ip_analyzer_demo():
+    """Opción 6: Demostración del analizador de IPs avanzado."""
+    print("\n\n--- Demo: Analizador de IPs Avanzado ---")
+    raw_ips_from_monitoring = [
+        "203.0.113.5", "198.51.100.22", "203.0.113.5",
+        "203.0.113.45", "198.51.100.22", "203.0.113.5",
+        "192.168.1.101"
+    ]
+    known_blacklist = ["203.0.113.5", "198.51.100.22", "99.99.99.99"]
+    print(f"IPs crudas a analizar: {raw_ips_from_monitoring}")
+    print(f"Blacklist conocida: {known_blacklist}")
+    malicious_ips = analyze_ips(raw_ips=raw_ips_from_monitoring, blacklist=known_blacklist)
+    if malicious_ips:
+        print("\n--- ¡ALERTA DE SEGURIDAD! ---\nSe encontraron las siguientes IPs maliciosas:")
+        for ip in malicious_ips:
+            print(f"- {ip}")
+    else:
+        print("\n--- Análisis completado ---\nNo se encontraron amenazas.")
+    print("\n--- Fin de la demostración ---\n")
 
-else:
-    print(f"No se encontró el archivo de log de ejemplo en '{log_file_path}'. Saltando demostración.")
+def run_log_parser_demo():
+    """Opción 7: Demostración del parser de logs con Regex."""
+    print("\n\n--- Demo: Parser de Logs con Regex ---")
+    log_de_ejemplo = "[2025-10-29 23:55:12] - WARNING - Memory usage exceeded 80%"
+    parsed_log = parse_log_line(log_de_ejemplo)
+    if parsed_log:
+        print("Log analizado con éxito:")
+        for key, value in parsed_log.items():
+            print(f"  - {key}: {value}")
+    else:
+        print(f"La línea de log '\"{log_de_ejemplo}\"' no pudo ser analizada.")
+    print("\n--- Fin de la demostración de regex ---\n")
 
-print("\n--- Fin de la demostración del detector de patrones ---")
+def run_pattern_detector_demo():
+    """Opción 8: Demostración del detector de patrones IoC."""
+    print("\n\n--- Demo: Detector de Patrones de IoCs ---")
+    log_file_path = Path("data/sample_log.txt")
+    if log_file_path.exists():
+        print(f"Leyendo log de ejemplo: {log_file_path}\n")
+        log_text = log_file_path.read_text(encoding='utf-8', errors='ignore')
+        found_patterns = analyze_text(log_text)
+        print("--- Resumen de IoCs Encontrados ---")
+        if found_patterns.get("ipv4_strict"):
+            print(f"\n[+] IPs encontradas: {found_patterns['ipv4_strict']}")
+        if found_patterns.get("email"):
+            print(f"[+] Emails encontrados: {found_patterns['email']}")
+        if found_patterns.get("md5"):
+            print(f"[+] Hashes MD5: {found_patterns['md5']}")
+        if found_patterns.get("sha1"):
+            print(f"[+] Hashes SHA1: {found_patterns['sha1']}")
+        if found_patterns.get("url"):
+            print(f"[+] URLs encontradas: {found_patterns['url']}")
+    else:
+        print(f"No se encontró el archivo de log de ejemplo en '{log_file_path}'. Saltando demostración.")
+    print("\n--- Fin de la demostración del detector de patrones ---\n")
 
 
+# --- Bucle principal del menú ---
+
+def main():
+    """Muestra el menú y gestiona la selección del usuario."""
+    
+    menu_options = {
+        "1": ("Validador de Contraseñas", run_password_validator),
+        "2": ("Analizador de Logs (Simple)", run_log_analyzer),
+        "3": ("Validador de IPs", run_ip_validator),
+        "4": ("Rastreador de Logins", run_login_tracker),
+        "5": ("Generador de IDs de Empleado", run_id_generator),
+        "6": ("Demo: Analizador de IPs Avanzado", run_ip_analyzer_demo),
+        "7": ("Demo: Parser de Logs con Regex", run_log_parser_demo),
+        "8": ("Demo: Detector de Patrones IoC", run_pattern_detector_demo),
+    }
+
+    while True:
+        print("--- Caja de Herramientas de Ciberseguridad ---")
+        for key, (description, _) in menu_options.items():
+            print(f"{key}. {description}")
+        print("0. Salir")
+        
+        choice = input("Elige una opción: ")
+        
+        if choice == "0":
+            print("Saliendo del programa. ¡Hasta pronto!")
+            break
+        
+        selected_option = menu_options.get(choice)
+        if selected_option:
+            selected_option[1]()
+        else:
+            print("Opción no válida. Por favor, elige de nuevo.\n")
+        
+        input("Presiona Enter para continuar...")
+
+if __name__ == "__main__":
+    main()
