@@ -1,0 +1,5 @@
+[2025-11-10 10:00:00] - INFO - System startup complete.
+[2025-11-10 10:01:15] - WARNING - Disk space is running low on /dev/sda1.
+[2025-11-10 10:02:30] - INFO - User 'admin' logged in successfully.
+[2025-11-10 10:05:00] - ERROR - Failed to connect to database at 10.0.0.5:5432.
+[2025-11-10 10:05:05] - ERROR - Retrying database connection...
