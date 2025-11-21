@@ -55,6 +55,7 @@ Aquí puedes encontrar toda la documentación generada para entender los concept
 - [Tutorial de Acceso a Archivos](./docs/tutorial-acceso-archivos.md)
 - [Introducción a los Algoritmos](./docs/introduccion-algoritmos.md)
 - [Guía de Introducción a las Expresiones Regulares](./docs/guia-expresiones-regulares.md)
+- [Tutorial de Escaneo de Red y Sockets](./docs/tutorial-escaneo-red.md)
 
 ### Anexos
 - [Anexo: Configuración de Logging](./docs/anexo-configuracion-logging.md)
@@ -88,7 +89,13 @@ Aquí están los módulos prácticos que hemos construido:
     -   Lee un archivo de texto línea por línea y busca un término de búsqueda, demostrando los fundamentos del análisis de logs.
 
 9.  **Menú Interactivo (`main.py`):**
-    -   Ofrece una interfaz de línea de comandos para ejecutar todas las herramientas y demostraciones del proyecto de forma interactiva.
+    - Ofrece una interfaz de línea de comandos para ejecutar todas las herramientas y demostraciones del proyecto de forma interactiva.
+
+10. **Escáner de Puertos (`src/port_scanner.py`):**
+    -   Utiliza sockets para verificar si puertos específicos (como 80, 443, 22) están abiertos en una IP objetivo.
+
+11. **Escáner de Red (`src/network_scanner.py`):**
+    -   Realiza un barrido de ping (Ping Sweep) utilizando hilos (`threading`) para descubrir dispositivos activos en una subred rápidamente.
 
 ## 💻 Herramientas de Línea de Comandos
 

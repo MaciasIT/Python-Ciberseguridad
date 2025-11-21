@@ -123,3 +123,45 @@ palabra_clave = "ERROR"
 
 analizar_log_simple(archivo_log, palabra_clave)
 ```
+
+---
+
+## 7. Escáner de Puertos (`port_scanner.py`)
+
+### ¿Qué hace?
+Este módulo permite verificar si un puerto específico (o una lista de puertos) está abierto en una dirección IP objetivo. Utiliza la librería `socket` de Python para intentar establecer una conexión TCP.
+
+### ¿Por qué es importante en ciberseguridad?
+El escaneo de puertos es una de las primeras fases en una prueba de penetración (pentesting) o auditoría de seguridad. Permite identificar qué servicios están corriendo en un servidor (ej: web en puerto 80, SSH en puerto 22) y, por tanto, qué vectores de ataque podrían estar disponibles. También es útil para administradores que quieren verificar que sus firewalls están bloqueando correctamente el tráfico no deseado.
+
+### ¿Cómo se usa?
+```python
+from src.port_scanner import scan_ports
+
+target_ip = "192.168.1.1"
+common_ports = [22, 80, 443]
+
+open_ports = scan_ports(target_ip, common_ports)
+print(f"Puertos abiertos encontrados: {open_ports}")
+```
+
+---
+
+## 8. Escáner de Red (`network_scanner.py`)
+
+### ¿Qué hace?
+Este script realiza un "Ping Sweep" (barrido de ping) para descubrir qué dispositivos están activos en una subred completa (ej: 192.168.1.0/24). Utiliza `subprocess` para ejecutar el comando ping del sistema operativo y `threading` para escanear múltiples IPs simultáneamente, reduciendo drásticamente el tiempo de ejecución.
+
+### ¿Por qué es importante en ciberseguridad?
+El descubrimiento de hosts es vital para tener un inventario real de la red. Un atacante lo usa para saber qué máquinas atacar; un defensor (Blue Team) lo usa para detectar dispositivos no autorizados (Shadow IT) conectados a la red corporativa.
+
+### ¿Cómo se usa?
+```python
+from src.network_scanner import scan_network
+
+# Escanear la red 192.168.1.x
+active_hosts = scan_network("192.168.1")
+
+print(f"Dispositivos activos: {active_hosts}")
+```
+

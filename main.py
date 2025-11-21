@@ -11,6 +11,8 @@ from src.generador_id_empleado import generar_ids_empleado
 from src.ip_analyzer import analyze_ips
 from src.log_parser import parse_log_line
 from src.pattern_detector import analyze_text
+from src.port_scanner import scan_ports
+from src.network_scanner import scan_network
 
 
 # --- Funciones para cada opción del menú ---
@@ -89,6 +91,63 @@ def run_id_generator():
     print(f"-> Se generaron {len(ids)} IDs para el departamento de Ventas.")
     print(f"-> Lista de IDs: {ids}\n")
 
+def run_port_scanner():
+    """Opción 9: Escanea puertos en una IP objetivo."""
+    print("\n--- Escáner de Puertos ---")
+    target_ip = input("Introduce la IP a escanear (ej: 127.0.0.1): ")
+    
+    print("Opciones de puertos:")
+    print("1. Puertos comunes (21, 22, 80, 443, 3306, 8080)")
+    print("2. Rango personalizado")
+    choice = input("Elige una opción (1/2): ")
+    
+    ports = []
+    if choice == "1":
+        ports = [21, 22, 80, 443, 3306, 8080]
+    elif choice == "2":
+        start = int(input("Puerto inicial: "))
+        end = int(input("Puerto final: "))
+        ports = list(range(start, end + 1))
+    else:
+        print("Opción no válida. Usando puertos comunes por defecto.")
+        ports = [21, 22, 80, 443, 3306, 8080]
+        
+    print(f"\nEscaneando {target_ip}...")
+    open_ports = scan_ports(target_ip, ports)
+    
+    if open_ports:
+        print(f"-> ¡Puertos Abiertos Encontrados!: {open_ports}")
+    else:
+        print("-> No se encontraron puertos abiertos en el rango seleccionado.")
+    print("")
+
+def run_network_scanner():
+    """Opción 10: Escanea una red completa en busca de hosts activos."""
+    print("\n--- Escáner de Red (Ping Sweep) ---")
+    network = input("Introduce el prefijo de red (ej: 192.168.1): ")
+    
+    # Validación simple
+    if network.count('.') != 2 and network.count('.') != 3:
+        print("Formato incorrecto. Debe ser tipo '192.168.1' o '10.0.0'")
+        return
+
+    # Si el usuario pone 192.168.1. quitamos el último punto
+    if network.endswith('.'):
+        network = network[:-1]
+        
+    print(f"\nIniciando barrido de ping en {network}.0/24 ...")
+    print("Esto puede tardar unos segundos dependiendo de la red.")
+    
+    active_hosts = scan_network(network)
+    
+    if active_hosts:
+        print(f"\n-> ¡Hosts Activos Encontrados ({len(active_hosts)})!:")
+        for host in active_hosts:
+            print(f"   [+] {host}")
+    else:
+        print("\n-> No se encontraron hosts activos (o el firewall bloquea ICMP).")
+    print("")
+
 def run_ip_analyzer_demo():
     """Opción 6: Demostración del analizador de IPs avanzado."""
     print("\n\n--- Demo: Analizador de IPs Avanzado ---")
@@ -160,6 +219,8 @@ def main():
         "6": ("Demo: Analizador de IPs Avanzado", run_ip_analyzer_demo),
         "7": ("Demo: Parser de Logs con Regex", run_log_parser_demo),
         "8": ("Demo: Detector de Patrones IoC", run_pattern_detector_demo),
+        "9": ("Escáner de Puertos", run_port_scanner),
+        "10": ("Escáner de Red (Ping Sweep)", run_network_scanner),
     }
 
     while True:
