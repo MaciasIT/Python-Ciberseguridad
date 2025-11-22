@@ -97,6 +97,9 @@ Aquí están los módulos prácticos que hemos construido:
 11. **Escáner de Red (`src/network_scanner.py`):**
     -   Realiza un barrido de ping (Ping Sweep) utilizando hilos (`threading`) para descubrir dispositivos activos en una subred rápidamente.
 
+12. **Control de Acceso (`src/access_control.py`):**
+    -   Automatiza la actualización de listas de acceso (Allow Lists) eliminando IPs revocadas de forma segura y eficiente.
+
 ## 💻 Herramientas de Línea de Comandos
 
 El proyecto incluye herramientas de CLI para interactuar con la lógica del programa directamente desde la terminal.

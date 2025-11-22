@@ -165,3 +165,25 @@ active_hosts = scan_network("192.168.1")
 print(f"Dispositivos activos: {active_hosts}")
 ```
 
+---
+
+## 9. Control de Acceso (`access_control.py`)
+
+### ¿Qué hace?
+Este módulo automatiza la gestión de una "Allow List" (Lista de Permitidos). Permite eliminar direcciones IP específicas de un archivo de control de acceso, asegurando que los usuarios o dispositivos revocados pierdan el acceso inmediatamente.
+
+### ¿Por qué es importante en ciberseguridad?
+Mantener las listas de control de acceso (ACLs) actualizadas es crítico. Si un empleado deja la empresa o un dispositivo se ve comprometido, su acceso debe ser revocado lo antes posible. Hacer esto manualmente es propenso a errores humanos; automatizarlo garantiza que se eliminen exactamente las IPs correctas sin afectar a las demás.
+
+### ¿Cómo se usa?
+```python
+from src.access_control import update_server_access_list
+
+# Archivo que contiene las IPs permitidas
+archivo_acl = "data/allow_list.txt"
+# Lista de IPs a revocar
+ips_a_eliminar = ["192.168.1.5", "10.0.0.200"]
+
+update_server_access_list(archivo_acl, ips_a_eliminar)
+```
+

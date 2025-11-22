@@ -13,6 +13,7 @@ from src.log_parser import parse_log_line
 from src.pattern_detector import analyze_text
 from src.port_scanner import scan_ports
 from src.network_scanner import scan_network
+from src.access_control import update_server_access_list
 
 
 # --- Funciones para cada opción del menú ---
@@ -205,6 +206,33 @@ def run_pattern_detector_demo():
     print("\n--- Fin de la demostración del detector de patrones ---\n")
 
 
+def run_access_control():
+    """Opción 11: Actualiza la lista de control de acceso (Allow List)."""
+    print("\n--- Control de Acceso (Actualizar Allow List) ---")
+    file_path = input("Introduce la ruta del archivo (ej: data/allow_list.txt): ")
+    
+    # Si el usuario no pone nada, sugerimos el archivo por defecto
+    if not file_path:
+        file_path = "data/allow_list.txt"
+        print(f"Usando archivo por defecto: {file_path}")
+
+    ips_input = input("Introduce las IPs a eliminar separadas por espacio: ")
+    ips_to_remove = ips_input.split()
+    
+    if not ips_to_remove:
+        print("No se introdujeron IPs. Operación cancelada.")
+        return
+
+    try:
+        update_server_access_list(file_path, ips_to_remove)
+        print("-> Lista actualizada correctamente.")
+    except FileNotFoundError:
+        print(f"Error: No se encontró el archivo '{file_path}'.")
+    except Exception as e:
+        print(f"Error inesperado: {e}")
+    print("")
+
+
 # --- Bucle principal del menú ---
 
 def main():
@@ -221,6 +249,7 @@ def main():
         "8": ("Demo: Detector de Patrones IoC", run_pattern_detector_demo),
         "9": ("Escáner de Puertos", run_port_scanner),
         "10": ("Escáner de Red (Ping Sweep)", run_network_scanner),
+        "11": ("Control de Acceso (Actualizar Allow List)", run_access_control),
     }
 
     while True:
