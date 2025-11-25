@@ -88,17 +88,20 @@ Aquí están los módulos prácticos que hemos construido:
 8.  **Lector de Logs Simples (`src/lector_logs_simples.py`):**
     -   Lee un archivo de texto línea por línea y busca un término de búsqueda, demostrando los fundamentos del análisis de logs.
 
-9.  **Menú Interactivo (`main.py`):**
-    - Ofrece una interfaz de línea de comandos para ejecutar todas las herramientas y demostraciones del proyecto de forma interactiva.
-
-10. **Escáner de Puertos (`src/port_scanner.py`):**
+9.  **Escáner de Puertos (`src/port_scanner.py`):**
     -   Utiliza sockets para verificar si puertos específicos (como 80, 443, 22) están abiertos en una IP objetivo.
 
-11. **Escáner de Red (`src/network_scanner.py`):**
+10. **Escáner de Red (`src/network_scanner.py`):**
     -   Realiza un barrido de ping (Ping Sweep) utilizando hilos (`threading`) para descubrir dispositivos activos en una subred rápidamente.
 
-12. **Control de Acceso (`src/access_control.py`):**
+11. **Control de Acceso (`src/access_control.py`):**
     -   Automatiza la actualización de listas de acceso (Allow Lists) eliminando IPs revocadas de forma segura y eficiente.
+
+12. **Actualizador de Listas de Acceso (`src/access_list_updater.py`):**
+    -   Una herramienta de línea de comandos profesional que gestiona un archivo de lista de permitidos (`allow_list`), eliminando las entradas que coinciden con una lista de revocación (`remove_list`). Incluye logging, manejo de errores y es validado por pruebas unitarias.
+
+13. **Script Principal (`main.py`):**
+    -   Ofrece una interfaz de línea de comandos para ejecutar todas las herramientas y demostraciones del proyecto de forma interactiva.
 
 ## 💻 Herramientas de Línea de Comandos
 

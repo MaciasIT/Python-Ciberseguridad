@@ -1,4 +1,6 @@
 # main.py
+import argparse
+import sys
 import time
 from pathlib import Path
 
@@ -14,18 +16,19 @@ from src.pattern_detector import analyze_text
 from src.port_scanner import scan_ports
 from src.network_scanner import scan_network
 from src.access_control import update_server_access_list
+from src.access_list_updater import update_file as update_access_list
 
 
 # --- Funciones para cada opción del menú ---
 
-def run_password_validator():
+def run_password_validator(args):
     """Opción 1: Pide una contraseña y muestra su fortaleza."""
     print("\n--- Validador de Contraseñas ---")
     password = input("Introduce la contraseña a validar: ")
     strength = validate_password_strength(password)
     print(f"-> La fortaleza de la contraseña es: {strength}\n")
 
-def run_log_analyzer():
+def run_log_analyzer(args):
     """Opción 2: Analiza un bloque de texto de log y extrae IPs con intentos fallidos."""
     print("\n--- Analizador de Logs (Simple) ---")
     log_content = """
@@ -54,7 +57,7 @@ def run_log_analyzer():
         print(f"- IP: {ip:<15} | Intentos: {count}")
     print("")
 
-def run_ip_validator():
+def run_ip_validator(args):
     """Opción 3: Filtra una lista de IPs contra una lista de permitidos."""
     print("\n--- Validador de IPs ---")
     ip_list = ["192.168.1.10", "8.8.8.8", "10.0.0.5", "192.168.1.1"]
@@ -67,7 +70,7 @@ def run_ip_validator():
     
     print(f"-> IPs que pasaron el filtro: {allowed_ips}\n")
 
-def run_login_tracker():
+def run_login_tracker(args):
     """Opción 4: Simula intentos de login y muestra si una cuenta se bloquea."""
     print("\n--- Rastreador de Logins ---")
     tracker = LoginTracker()
@@ -85,14 +88,14 @@ def run_login_tracker():
             break
     print("")
 
-def run_id_generator():
+def run_id_generator(args):
     """Opción 5: Genera y muestra IDs de empleado."""
     print("\n--- Generador de IDs de Empleado ---")
     ids = generar_ids_empleado()
     print(f"-> Se generaron {len(ids)} IDs para el departamento de Ventas.")
     print(f"-> Lista de IDs: {ids}\n")
 
-def run_port_scanner():
+def run_port_scanner(args):
     """Opción 9: Escanea puertos en una IP objetivo."""
     print("\n--- Escáner de Puertos ---")
     target_ip = input("Introduce la IP a escanear (ej: 127.0.0.1): ")
@@ -122,7 +125,7 @@ def run_port_scanner():
         print("-> No se encontraron puertos abiertos en el rango seleccionado.")
     print("")
 
-def run_network_scanner():
+def run_network_scanner(args):
     """Opción 10: Escanea una red completa en busca de hosts activos."""
     print("\n--- Escáner de Red (Ping Sweep) ---")
     network = input("Introduce el prefijo de red (ej: 192.168.1): ")
@@ -149,7 +152,7 @@ def run_network_scanner():
         print("\n-> No se encontraron hosts activos (o el firewall bloquea ICMP).")
     print("")
 
-def run_ip_analyzer_demo():
+def run_ip_analyzer_demo(args):
     """Opción 6: Demostración del analizador de IPs avanzado."""
     print("\n\n--- Demo: Analizador de IPs Avanzado ---")
     raw_ips_from_monitoring = [
@@ -169,7 +172,7 @@ def run_ip_analyzer_demo():
         print("\n--- Análisis completado ---\nNo se encontraron amenazas.")
     print("\n--- Fin de la demostración ---\n")
 
-def run_log_parser_demo():
+def run_log_parser_demo(args):
     """Opción 7: Demostración del parser de logs con Regex."""
     print("\n\n--- Demo: Parser de Logs con Regex ---")
     log_de_ejemplo = "[2025-10-29 23:55:12] - WARNING - Memory usage exceeded 80%"
@@ -182,7 +185,7 @@ def run_log_parser_demo():
         print(f"La línea de log '\"{log_de_ejemplo}\"' no pudo ser analizada.")
     print("\n--- Fin de la demostración de regex ---\n")
 
-def run_pattern_detector_demo():
+def run_pattern_detector_demo(args):
     """Opción 8: Demostración del detector de patrones IoC."""
     print("\n\n--- Demo: Detector de Patrones de IoCs ---")
     log_file_path = Path("data/sample_log.txt")
@@ -206,7 +209,7 @@ def run_pattern_detector_demo():
     print("\n--- Fin de la demostración del detector de patrones ---\n")
 
 
-def run_access_control():
+def run_access_control(args):
     """Opción 11: Actualiza la lista de control de acceso (Allow List)."""
     print("\n--- Control de Acceso (Actualizar Allow List) ---")
     file_path = input("Introduce la ruta del archivo (ej: data/allow_list.txt): ")
@@ -232,45 +235,66 @@ def run_access_control():
         print(f"Error inesperado: {e}")
     print("")
 
+def handle_update_ips(args):
+    print("--- Ejecutando el Actualizador de Listas de Acceso ---")
+    success = update_access_list(args.allow_list, args.remove_list, args.output)
+    if not success:
+        print("La operación falló. Revisa los logs para más detalles.")
+        sys.exit(1)
+    print("--- Operación completada ---")
 
-# --- Bucle principal del menú ---
 
 def main():
-    """Muestra el menú y gestiona la selección del usuario."""
-    
-    menu_options = {
-        "1": ("Validador de Contraseñas", run_password_validator),
-        "2": ("Analizador de Logs (Simple)", run_log_analyzer),
-        "3": ("Validador de IPs", run_ip_validator),
-        "4": ("Rastreador de Logins", run_login_tracker),
-        "5": ("Generador de IDs de Empleado", run_id_generator),
-        "6": ("Demo: Analizador de IPs Avanzado", run_ip_analyzer_demo),
-        "7": ("Demo: Parser de Logs con Regex", run_log_parser_demo),
-        "8": ("Demo: Detector de Patrones IoC", run_pattern_detector_demo),
-        "9": ("Escáner de Puertos", run_port_scanner),
-        "10": ("Escáner de Red (Ping Sweep)", run_network_scanner),
-        "11": ("Control de Acceso (Actualizar Allow List)", run_access_control),
-    }
+    parser = argparse.ArgumentParser(
+        description="Herramienta Central de Ciberseguridad - Proyecto Curso Python",
+        epilog="Usa 'python3 main.py <comando> --help' para más información sobre un comando específico."
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True, help="Comandos disponibles")
 
-    while True:
-        print("--- Caja de Herramientas de Ciberseguridad ---")
-        for key, (description, _) in menu_options.items():
-            print(f"{key}. {description}")
-        print("0. Salir")
-        
-        choice = input("Elige una opción: ")
-        
-        if choice == "0":
-            print("Saliendo del programa. ¡Hasta pronto!")
-            break
-        
-        selected_option = menu_options.get(choice)
-        if selected_option:
-            selected_option[1]()
-        else:
-            print("Opción no válida. Por favor, elige de nuevo.\n")
-        
-        input("Presiona Enter para continuar...")
+    # Subcomando para 'update-ips'
+    parser_update = subparsers.add_parser("update-ips", help="Actualiza una lista de IPs permitidas.")
+    parser_update.add_argument("-a", "--allow-list", required=True, help="Ruta al archivo con la lista de IPs permitidas.")
+    parser_update.add_argument("-r", "--remove-list", required=True, help="Ruta al archivo con las IPs a eliminar.")
+    parser_update.add_argument("-o", "--output", help="Opcional: Ruta al archivo de salida.")
+    parser_update.set_defaults(func=handle_update_ips)
+
+    # Subcomandos para las demostraciones
+    parser_demo_log = subparsers.add_parser("demo-log-analyzer", help="Ejecuta la demo del analizador de logs.")
+    parser_demo_log.set_defaults(func=run_log_analyzer)
+
+    parser_demo_ip = subparsers.add_parser("demo-ip-analyzer", help="Ejecuta la demo del analizador de IPs.")
+    parser_demo_ip.set_defaults(func=run_ip_analyzer_demo)
+
+    parser_demo_parser = subparsers.add_parser("demo-log-parser", help="Ejecuta la demo del parser de logs con regex.")
+    parser_demo_parser.set_defaults(func=run_log_parser_demo)
+
+    parser_demo_ioc = subparsers.add_parser("demo-ioc-detector", help="Ejecuta la demo del detector de IoCs.")
+    parser_demo_ioc.set_defaults(func=run_pattern_detector_demo)
+    
+    parser_demo_pass = subparsers.add_parser("demo-pass-validator", help="Ejecuta la demo del validador de contraseñas.")
+    parser_demo_pass.set_defaults(func=run_password_validator)
+    
+    parser_demo_ip_val = subparsers.add_parser("demo-ip-validator", help="Ejecuta la demo del validador de IPs.")
+    parser_demo_ip_val.set_defaults(func=run_ip_validator)
+    
+    parser_demo_login = subparsers.add_parser("demo-login-tracker", help="Ejecuta la demo del rastreador de logins.")
+    parser_demo_login.set_defaults(func=run_login_tracker)
+    
+    parser_demo_id = subparsers.add_parser("demo-id-generator", help="Ejecuta la demo del generador de IDs.")
+    parser_demo_id.set_defaults(func=run_id_generator)
+    
+    parser_port_scan = subparsers.add_parser("port-scan", help="Escanea puertos en una IP objetivo.")
+    parser_port_scan.set_defaults(func=run_port_scanner)
+    
+    parser_net_scan = subparsers.add_parser("network-scan", help="Escanea una red en busca de hosts activos.")
+    parser_net_scan.set_defaults(func=run_network_scanner)
+    
+    parser_access_control = subparsers.add_parser("access-control", help="Actualiza la lista de control de acceso.")
+    parser_access_control.set_defaults(func=run_access_control)
+    
+
+    args = parser.parse_args()
+    args.func(args)
 
 if __name__ == "__main__":
     main()
