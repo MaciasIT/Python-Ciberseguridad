@@ -1,0 +1,3 @@
+[submodule "tools/Shapeshifter-Detector"]
+	path = tools/Shapeshifter-Detector
+	url = https://github.com/Michel-Macias/Shapeshifter-Detector.git

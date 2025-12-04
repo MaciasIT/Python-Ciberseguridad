@@ -131,3 +131,11 @@ Para verificar la integridad de todo el código, puedes ejecutar el conjunto de 
 ```bash
 python3 -m unittest discover
 ```
+
+## 🔗 Proyectos Relacionados
+
+### Shapeshifter-Detector
+
+Una herramienta de ciberseguridad complementaria que actúa como un inspector de archivos binarios. Utiliza **Magic Numbers** (firmas de bytes) para detectar la verdadera identidad de un archivo, ignorando su extensión. Es una capa de defensa esencial contra técnicas de *Extension Spoofing*, donde un atacante renombra un archivo malicioso (ej. `malware.exe` a `documento.pdf`) para engañar a los usuarios.
+
+-   **Repositorio:** [Michel-Macias/Shapeshifter-Detector](https://github.com/Michel-Macias/Shapeshifter-Detector)
