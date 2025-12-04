@@ -50,6 +50,8 @@ Aquí puedes encontrar toda la documentación generada para entender los concept
 - [Guía de Estructuras de Datos](./docs/guia-estructuras-de-datos.md)
 
 ### Ciberseguridad y Técnicas
+
+- [Guía de Depuración en Python](./docs/guia-depuracion-python.md)
 - [Tutorial de Control de Acceso](./docs/tutorial-control-de-acceso.md)
 - [Tutorial de Procesamiento de IPs](./docs/tutorial-procesamiento-ips.md)
 - [Tutorial de Acceso a Archivos](./docs/tutorial-acceso-archivos.md)
