@@ -1,4 +1,13 @@
 import socket
+import ipaddress
+
+def validate_ip(ip):
+    """Validate if the input is a valid IP address."""
+    try:
+        ipaddress.ip_address(ip)
+        return True
+    except ValueError:
+        return False
 
 def scan_port(ip, port, timeout=0.5):
     """
@@ -12,6 +21,12 @@ def scan_port(ip, port, timeout=0.5):
     Returns:
         bool: True si el puerto está abierto, False si está cerrado o filtrado.
     """
+    if not validate_ip(ip):
+        return False
+    
+    if not (1 <= port <= 65535):
+        return False
+
     try:
         # Crear un socket TCP/IP
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,6 +52,10 @@ def scan_ports(ip, ports):
     Returns:
         list: Lista de puertos que se encontraron abiertos.
     """
+    if not validate_ip(ip):
+        print(f"Error: IP inválida: {ip}")
+        return []
+
     open_ports = []
     
     print(f"Iniciando escaneo en {ip}...")

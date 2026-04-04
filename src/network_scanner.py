@@ -1,6 +1,16 @@
 import subprocess
 import platform
 import concurrent.futures
+import ipaddress
+
+def validate_network_prefix(prefix):
+    """Validate if the input is a valid network prefix (e.g., '192.168.1')."""
+    try:
+        # Intentar validar como una red /24
+        ipaddress.ip_network(f"{prefix}.0/24", strict=False)
+        return True
+    except ValueError:
+        return False
 
 def ping_ip(ip):
     """
@@ -42,6 +52,10 @@ def scan_network(network_prefix, max_workers=50):
     Returns:
         list: Lista de IPs activas encontradas.
     """
+    if not validate_network_prefix(network_prefix):
+        print(f"Error: Prefijo de red inválido: {network_prefix}")
+        return []
+
     active_hosts = []
     
     # Generar la lista de IPs a escanear (del 1 al 254)
